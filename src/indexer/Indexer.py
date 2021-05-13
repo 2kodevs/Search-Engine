@@ -123,8 +123,7 @@ class Indexer:
             if doc['author'] != '':
                 author = doc['author']
                 for sw in stopwords:
-                    if sw in author:
-                        author = author.replace(sw, '')
+                    author = author.replace(sw, '')
                 terms.append((author, id))
         terms.sort()
         log.debug('Corpus tokenized')
