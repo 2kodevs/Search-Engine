@@ -133,3 +133,4 @@ class Indexer:
         log.debug('Corpus tokenized')
         log.debug(f'Terms: {terms}')
         return terms
+        
