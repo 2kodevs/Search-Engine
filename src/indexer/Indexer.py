@@ -100,8 +100,7 @@ class Indexer:
 
             #//TODO: Consider to give more weight to terms in Title
             for sw in stopwords:
-                if sw in body:
-                    body = body.replace(sw, ' ')
+                body = body.replace(sw, ' ')
 
             for words in body.split(' '):
                 terms.append((word, id))
