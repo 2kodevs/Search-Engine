@@ -117,11 +117,8 @@ class Indexer:
                 if sw in body:
                     body = body.replace(sw, ' ')
 
-            for s in body.split(' '):
-                for word in s.split('\n'):
-                    if word == '': #for text with several spaces and blanck lines
-                        continue
-                    terms.append((word, id))
+            for words in body.split(' '):
+                terms.append((word, id))
                     
             if doc['author'] != '':
                 author = doc['author']
