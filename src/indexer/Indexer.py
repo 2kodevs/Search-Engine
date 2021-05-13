@@ -59,12 +59,11 @@ class Indexer:
         with open(self.idx_dir + 'dirs.json', 'w') as fd_json:
             dirs.append((corpus_dir, driver))
             json.dump(dirs, fd_json)
-
-            with open(self.idx_dir + f'{driver}_index_{len(dirs)}', 'w') as fd:
-                index = self.to_dto()
-                json.dump(index, fd)
-                log.info('Created index ' + f'{driver}_index_{len(dirs)}' + f' at {self.idx_dir}')
-                return index
+        with open(self.idx_dir + f'{driver}_index_{len(dirs)}', 'w') as fd:
+            index = self.to_dto()
+            json.dump(index, fd)
+            log.info('Created index ' + f'{driver}_index_{len(dirs)}' + f' at {self.idx_dir}')
+            return index
 
 
     def update_vocabulary(self, terms):
