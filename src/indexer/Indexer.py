@@ -1,12 +1,12 @@
-import json
+import json, os
 from ..logging import LoggerFactory as Logger
+from ..corpustools import CorpusReader
 
 log = None
 stopwords = [',', '.', ';', ':', '\"', '\'', '(', ')', '-', '\n'] #//TODO: Determine best place for this
-
 class Indexer:
 
-    def __init__(self, idx_dir = './indices/'):
+    def __init__(self, idx_dir = './index/'):
         global log
         log = Logger('Search-Engine').getChild('Indexer')
 
@@ -15,28 +15,57 @@ class Indexer:
         self.vocabulary = dict()
         self.idx_dir = idx_dir
 
+        if not os.path.exists(self.idx_dir):
+            os.mkdir(self.idx_dir)
+            log.info(f'Created folder {self.idx_dir}')
+            with open(self.idx_dir + 'dirs.json', 'w') as fd:
+                json.dump([], fd)
 
-    def index(self, corpus_dir, driver):
-        data = [] #call to get_data() of corpustools 
+
+    def get_index(self, corpus_dir, driver):
+        index = self.load_index(corpus_dir, driver)
+        if index:
+            return index
+
+        reader = CorpusReader(corpus_dir, driver)
+        data = reader.get_data()
 
         self.N = len(data)
         self.max_freq = [0] * self.N
 
         terms = Indexer.tokenize(data)
         self.update_vocabulary(terms)
-        self.save_index(driver)
+        return self.save_index(corpus_dir, driver)
 
 
-    def save_index(self, corpus_name):
-        import os
-        if not os.path.exists(self.idx_dir):
-            os.mkdir(self.idx_dir)
-            log.info(f'Created folder {self.idx_dir}')
+    def load_index(self, corpus_dir, driver):
+        try:
+            with open(self.idx_dir + 'dirs.json', 'r') as fd_json:
+                dirs = json.load(fd_json)
+                for idx, item in enumerate(dirs):
+                    addr, d = item
+                    if corpus_dir == addr and driver == d:
+                        with open(self.idx_dir + f'{driver}_index_{idx + 1}', 'r') as fd:
+                            return json.load(fd)
+            log.debug(f'({corpus_dir}, {driver}) not found in dirs.json')
+        except FileNotFoundError:
+            log.info('Index not found, proceding to create one...')
+        return None
 
-        files_count = len([name for name in os.listdir(self.idx_dir) if os.path.isfile(name)])
-        with os.open(self.idx_dir + f'{corpus_name}_index_{files_count}') as fd:
-            fd.write(self.to_json())
-            log.info('Created index ' + f'{corpus_name}_index_{files_count}' + f' at {self.idx_dir}')
+
+    def save_index(self, corpus_dir, driver):
+        dirs = []
+        with open(self.idx_dir + 'dirs.json', 'r') as fd_json:
+            dirs = json.load(fd_json)
+        with open(self.idx_dir + 'dirs.json', 'w') as fd_json:
+            dirs.append((corpus_dir, driver))
+            json.dump(dirs, fd_json)
+
+            with open(self.idx_dir + f'{driver}_index_{len(dirs)}', 'w') as fd:
+                index = self.to_dto()
+                json.dump(index, fd)
+                log.info('Created index ' + f'{driver}_index_{len(dirs)}' + f' at {self.idx_dir}')
+                return index
 
 
     def update_vocabulary(self, terms):
@@ -68,35 +97,38 @@ class Indexer:
         log.debug(f'Vocabulary: {self.vocabulary}')
 
 
-    def to_json(self):
-        temp = {
+    def to_dto(self):
+        return {
             'N': self.N,
             'max_freq': self.max_freq,
             'vocabulary': self.vocabulary,
         }
-        return json.dump(temp)
 
 
     @staticmethod
     def tokenize(data):
         terms = []
         for doc in data:
-            id = doc['ID']
-            body = doc['Text'] + doc['Title']
+            id = int(doc['id'])
+            body = doc['text'] + doc['title']
 
             #//TODO: Consider to give more weight to terms in Title
-            for word in body.split(' '):
+            for sw in stopwords:
+                if sw in body:
+                    body = body.replace(sw, ' ')
 
+            for s in body.split(' '):
+                for word in s.split('\n'):
+                    if word == '': #for text with several spaces and blanck lines
+                        continue
+                    terms.append((word, id))
+                    
+            if doc['author'] != '':
+                author = doc['author']
                 for sw in stopwords:
-                    if sw in word:
-                        word = word.replace(sw, '')
-
-                if word == '': #for text with several spaces and blanck lines
-                    continue
-
-                terms.append((word, id))
-            if doc['Author'] != '':
-                terms.append((doc['Author'], id))
+                    if sw in author:
+                        author = author.replace(sw, '')
+                terms.append((author, id))
         terms.sort()
         log.debug('Corpus tokenized')
         log.debug(f'Terms: {terms}')

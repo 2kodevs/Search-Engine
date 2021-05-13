@@ -9,10 +9,10 @@ class IndexerTestCase(unittest.TestCase):
     def test_tokenizer(self):
         #data ok 1 doc
         data = [{
-            'ID': 1,
-            'Title': 'some random title',
-            'Author': 'alan brito',
-            'Text': """
+            'id': 1,
+            'title': 'some random title',
+            'author': 'alan brito',
+            'text': """
                 here lies the test of tests, the supreme test, first 2kodevs test using python.
 
                 this day should be remembered forever, the future of the tests depends on it. we have a heavy burden for now on.
@@ -33,11 +33,11 @@ class IndexerTestCase(unittest.TestCase):
 
         #data with many stopwords and blank spaces 1 doc
         data = [{
-            'ID': 1,
-            'Title': 'some random title',
-            'Author': 'alan brito',
-            'Text': """
-                here lies the   test of ... tests, the supreme test, first 2kodevs test using python.
+            'id': 1,
+            'title': 'some random title',
+            'author': 'alan brito',
+            'text': """
+                here lies the   test of ... tests, the supreme-test, first \n2kodevs\n test using python.
 
 
                 this day should be; remembered: . forever, the future   of the tests ,,,depends on it. we have a heavy burden for now on.
@@ -59,20 +59,20 @@ class IndexerTestCase(unittest.TestCase):
 
         #data ok 2 doc
         data = [{
-            'ID': 1,
-            'Title': 'some random title',
-            'Author': 'alan brito',
-            'Text': """
+            'id': 1,
+            'title': 'some random title',
+            'author': 'alan brito',
+            'text': """
                 here lies the test of tests, the supreme test, first 2kodevs test using python.
 
                 this day should be remembered forever, the future of the tests depends on it. we have a heavy burden for now on.
             """,
         },
         {
-            'ID': 2,
-            'Title': 'some random title 2',
-            'Author': 'susana horia',
-            'Text': """
+            'id': 2,
+            'title': 'some random title 2',
+            'author': 'susana horia',
+            'text': """
                 less meaningfuls words around here, still testing tests with some test
             """,
         }
@@ -94,18 +94,18 @@ class IndexerTestCase(unittest.TestCase):
 
     def test_update_vocabulary(self):
         data = [{
-            'ID': 1,
-            'Title': 'some random title',
-            'Author': 'alan brito',
-            'Text': """
+            'id': 1,
+            'title': 'some random title',
+            'author': 'alan brito',
+            'text': """
                 here lies the test of tests, the supreme test, first 2kodevs test using python.
             """,
         },
         {
-            'ID': 2,
-            'Title': 'some random title 2',
-            'Author': 'susana horia',
-            'Text': """
+            'id': 2,
+            'title': 'some random title 2',
+            'author': 'susana horia',
+            'text': """
                 less meaningfuls words around here, still testing tests with some test
             """,
         }
