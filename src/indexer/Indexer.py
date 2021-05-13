@@ -42,11 +42,10 @@ class Indexer:
         try:
             with open(self.idx_dir + 'dirs.json', 'r') as fd_json:
                 dirs = json.load(fd_json)
-                for idx, item in enumerate(dirs):
-                    addr, d = item
-                    if corpus_dir == addr and driver == d:
-                        with open(self.idx_dir + f'{driver}_index_{idx + 1}', 'r') as fd:
-                            return json.load(fd)
+                idx = dirs.index([corpus_dir, driver])
+                with open(self.idx_dir + f'{driver}_index_{idx + 1}', 'r') as fd:
+                    return json.load(fd)
+        except ValueError:
             log.debug(f'({corpus_dir}, {driver}) not found in dirs.json')
         except FileNotFoundError:
             log.info('Index not found, proceding to create one...')
