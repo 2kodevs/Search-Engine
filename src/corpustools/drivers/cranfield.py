@@ -1,6 +1,7 @@
 import re
 
-docre = r'\.I (.+)\n\.T\n((?:(?=[^.])(?:.*\n))*)\.A\n((?:(?=[^.])(?:.*\n))*)\.B\n((?:(?=[^.])(?:.*\n))*)\.W\n((?:(?=[^.])(?:.*\n))*)'
+txtblock = "\n((?:(?=[^.])(?:.*\n))*)" 
+docre = rf'\.I (.+)\n\.T{txtblock}\.A{txtblock}\.B{txtblock}\.W{txtblock}'
 
 def cranfield(addr):
     '''
@@ -21,11 +22,11 @@ def cranfield(addr):
     matchings = re.findall(docre, doctext)
     return [
         {
-            'B':      b,
             'id':     id,
-            'text':   text,
-            'title':  title,
-            'author': author,
+            'B':      b.lower(),
+            'text':   text.lower(),
+            'title':  title.lower(),
+            'author': author.lower(),
         } 
         for (id, title, author, b, text) in matchings
     ]
