@@ -14,3 +14,4 @@ if __name__ == '__main__':
     
     data = idx.get_index(corpus_addr, driver)
     print(data)
+    
