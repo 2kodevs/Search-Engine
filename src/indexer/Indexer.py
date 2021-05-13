@@ -6,7 +6,7 @@ log = None
 stopwords = [',', '.', ';', ':', '\"', '\'', '(', ')', '-', '\n'] #//TODO: Determine best place for this
 class Indexer:
 
-    def __init__(self, idx_dir = './index/'):
+    def __init__(self, idx_dir = './.index/'):
         global log
         log = Logger('Search-Engine').getChild('Indexer')
 
