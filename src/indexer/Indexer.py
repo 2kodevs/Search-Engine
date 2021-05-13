@@ -69,30 +69,18 @@ class Indexer:
 
 
     def update_vocabulary(self, terms):
-        terms.append(('zzzzz$$$$$&&&&&&', -1))
-        unique_terms = list({ word for (word, _) in terms })
-        unique_terms.sort()
-        last_idx = 0
-
-        for term in unique_terms:
-            idx = terms[last_idx][1]
-            freq = 0
-            for i in range(last_idx, len(terms)):
-                word, id = terms[i]
-
-                if id != idx or word != term:
-                    if (not self.vocabulary.get(term)):
-                        self.vocabulary[term] = []
-                    self.vocabulary[term].append((idx, freq))
-                    self.max_freq[idx - 1] = max(freq, self.max_freq[idx - 1])
-                    if word != term:
-                        last_idx = i
-                        break
-                    idx = id
-                    freq = 0
-                
-                freq += 1
-                last_idx = i
+        freq = 1
+        terms.append((None, None))
+        for i in range(1, len(terms)):
+            if terms[i] != terms[i - 1]:
+                term, id = terms[i - 1]
+                if term not in self.vocabulary:
+                    self.vocabulary[term] = []
+                self.vocabulary[term].append((id, freq))
+                self.max_freq[id - 1] = max(freq, self.max_freq[id - 1])
+                freq = 0
+            freq += 1
+        terms.pop()
         log.debug('Vocabulary updated')
         log.debug(f'Vocabulary: {self.vocabulary}')
 
