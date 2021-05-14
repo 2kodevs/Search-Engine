@@ -54,7 +54,7 @@ class SearchEngine():
         self.indexer.N = 1
         self.indexer.max_freq = [0]
 
-        terms = self.indexer.tokenize(self.get_tokenizable(q))
+        terms = Indexer.tokenize(self.get_tokenizable(q))
         self.indexer.update_vocabulary(terms)
         return list(self.indexer.vocabulary.keys())
 
