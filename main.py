@@ -1,20 +1,20 @@
-from src import SearchEngine, LoggerFactory as Logger
+from src import SearchEngine #, LoggerFactory as Logger
 
 
-def init_logger(args):
-    log = Logger(name='Search-Engine', log=args.file)
-    log.setLevel(args.level)
-    return log
+# def init_logger(args):
+#     log = Logger(name='Search-Engine', log=args.file)
+#     log.setLevel(args.level)
+#     return log
 
 
 def visual(args):
-    log = init_logger(args)
-    log.info('Starting the app', 'visual')
+    # log = init_logger(args)
+
 
 
 def cmd(args):
-    log = init_logger(args)
-    log.info('Running the indexer', 'cmd')
+    # log = init_logger(args)
+    # log.info('Running the indexer', 'cmd')
 
     se = SearchEngine(args.corpus_dir, args.driver)
     ranking = se.search(args.query, args.sim)

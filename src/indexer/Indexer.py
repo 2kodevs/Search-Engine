@@ -1,14 +1,14 @@
 import json, os
-from ..logging import LoggerFactory as Logger
+# from ..logging import LoggerFactory as Logger
 from ..corpustools import CorpusReader
 
-log = None
+# log = None
 stopwords = [',', '.', ';', ':', '\"', '\'', '(', ')', '-', '\n'] #//TODO: Determine best place for this
 class Indexer:
 
     def __init__(self, idx_dir = './.index/'):
-        global log
-        log = Logger('Search-Engine').getChild('Indexer')
+        # global log
+        # log = Logger('Search-Engine').getChild('Indexer')
 
         self.N = 0
         self.max_freq = []
@@ -17,7 +17,7 @@ class Indexer:
 
         if not os.path.exists(self.idx_dir):
             os.mkdir(self.idx_dir)
-            log.info(f'Created folder {self.idx_dir}')
+            # log.info(f'Created folder {self.idx_dir}')
             with open(self.idx_dir + 'dirs.json', 'w') as fd:
                 json.dump([], fd)
 
@@ -46,9 +46,9 @@ class Indexer:
                 with open(self.idx_dir + f'{driver}_index_{idx + 1}', 'r') as fd:
                     return json.load(fd)
         except ValueError:
-            log.debug(f'({corpus_dir}, {driver}) not found in dirs.json')
+            # log.debug(f'({corpus_dir}, {driver}) not found in dirs.json')
         except FileNotFoundError:
-            log.info('Index not found, proceding to create one...')
+            # log.info('Index not found, proceding to create one...')
         return None
 
 
@@ -62,7 +62,7 @@ class Indexer:
         with open(self.idx_dir + f'{driver}_index_{len(dirs)}', 'w') as fd:
             index = self.to_dto()
             json.dump(index, fd)
-            log.info('Created index ' + f'{driver}_index_{len(dirs)}' + f' at {self.idx_dir}')
+            # log.info('Created index ' + f'{driver}_index_{len(dirs)}' + f' at {self.idx_dir}')
             return index
 
 
@@ -79,8 +79,8 @@ class Indexer:
                 freq = 0
             freq += 1
         terms.pop()
-        log.debug('Vocabulary updated')
-        log.debug(f'Vocabulary: {self.vocabulary}')
+        # log.debug('Vocabulary updated')
+        # log.debug(f'Vocabulary: {self.vocabulary}')
 
 
     def to_dto(self):
@@ -111,7 +111,7 @@ class Indexer:
                     author = author.replace(sw, '')
                 terms.append((author, id))
         terms.sort()
-        log.debug('Corpus tokenized')
-        log.debug(f'Terms: {terms}')
+        # log.debug('Corpus tokenized')
+        # log.debug(f'Terms: {terms}')
         return terms
         
