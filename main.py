@@ -20,7 +20,7 @@ def visual(args):
         corpus = st.text_input('Corpus Address:', help='The address where the corpus is stored')
         driver = st.text_input('Driver:',         help='The driver needed to parse the corpus')
         with st.beta_expander("Advanced"):
-            sim = st.slider("Sim threshold percent:", min_value=0.0, max_value=100.0, value=0.0, format="%f%%")
+            sim = st.slider("Minimum percent of similarity between query and documents:", min_value=0.0, max_value=100.0, value=0.0, format="%f%%")
         st.write('Press submit to persist the changes')
         st.form_submit_button()
 
