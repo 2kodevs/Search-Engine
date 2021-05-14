@@ -6,17 +6,24 @@ class SearchEngine():
     def __init__(self, corpus_dir, driver):
         self.indexer = Indexer()
         self.index = self.indexer.get_index(corpus_dir, driver)
+        self.last_query = ''
 
     
     def search(self, q, threshold, a = 0.5):
         q = self.vectorize_query(q)
-        q = list(filter(lambda term: term in self.index['vocabulary'], q))
-
         w, wq = self.get_weights(q, a)
 
+        self.last_query = q
+        self.w = w
+        self.wq = wq
+
+        return self.get_ranking(w, wq, threshold)
+
+
+    def get_ranking(self, w, wq, threshold):
         ranking = [0] * self.index['N']
         norm_w = ranking.copy()
-        for i in range(len(q)):
+        for i in range(len(wq)):
             for j in range(len(w[i])):
                 ranking[j] += w[i][j] * wq[i]
                 norm_w[j] += w[i][j] ** 2
@@ -27,7 +34,7 @@ class SearchEngine():
         ranking.sort(reverse=True)
         ranking = list(filter(lambda sim: sim[0] >= threshold, ranking))
         return ranking
-
+        
 
     def get_weights(self, v, a):
         n = [len(self.index['vocabulary'][term]) for term in v ]
@@ -57,7 +64,7 @@ class SearchEngine():
         terms = Indexer.tokenize(self.get_tokenizable(q))
         self.indexer.vocabulary.clear()
         self.indexer.update_vocabulary(terms)
-        return list(self.indexer.vocabulary.keys())
+        return list(filter(lambda term: term in self.index['vocabulary'], self.indexer.vocabulary.keys()))
 
 
     def get_tokenizable(self, q):
