@@ -41,11 +41,11 @@ def visual(args):
                     left.write(b)
                     v = rigth.checkbox('', key=f'check{corpus}-{driver}-{query}{b}')
                     data.append(((a, b), v))
-                left, rigth = st.beta_columns(2)
+                left, right = st.beta_columns(2)
                 with left:
                     rbutton = st.form_submit_button()
-                with rigth:
-                    st.write("Select and submit the relevant files")
+                with right:
+                    st.write("Select and submit the relevant files to improve results")
 
             if rbutton:
                 session.rank = session.se.give_feedback(data, sim/100)     
