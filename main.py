@@ -1,5 +1,4 @@
-from src import SearchEngine #, LoggerFactory as Logger
-from src import SessionState
+from src import SearchEngine, SessionState, CorpusReader #, LoggerFactory as Logger
 import streamlit as st
 
 
@@ -36,11 +35,15 @@ def visual(args):
             
             with st.form('retro'):
                 data, selection = [], False
-                for (a, b) in session.rank:
+                cr = CorpusReader(corpus, driver)
+                for ((p, id), (t, a)) in zip(session.rank, cr.get_info(session.rank)):
                     left, rigth = st.beta_columns([5, 1])
-                    left.write(b)
-                    v = rigth.checkbox('', key=f'check{corpus}-{driver}-{query}{b}')
-                    data.append(((a, b), v))
+                    with left:
+                        st.write(t)
+                        st.caption(a)
+                        # st.write(id)
+                    v = rigth.checkbox('', key=f'check{corpus}-{driver}-{query}{id}')
+                    data.append(((p, id), v))
                     selection |= v
                 left, right = st.beta_columns([1, 3])
                 with left:
