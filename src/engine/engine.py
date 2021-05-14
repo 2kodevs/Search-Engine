@@ -45,7 +45,7 @@ class SearchEngine():
             for (docID, freq) in self.index['vocabulary'][term]:
                 tf[i][docID - 1] = freq / max_freq[docID - 1]
 
-        w = [[tf[i][j] * idf[i] for j in range(len(tf[i]))] for i in range(len(v))]
+        w = [[tf[i][j] * idf[i] for j in range(N)] for i in range(len(v))]
         wq = [(a + (1 - a) * tfq[i]) * idf[i] for i in range(len(v))]
         return (w, wq)
 
