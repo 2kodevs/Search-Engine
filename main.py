@@ -17,7 +17,7 @@ def visual(args):
     st.title('Search Engine App')
     st.sidebar.title('Settings')
     with st.sidebar.form('config'):
-        corpus = st.text_input('Corpus Address:', help='The address where the corpus is stored')
+        corpus = st.text_input('Corpus Directory:', help='The directory where the corpus is stored')
         driver = st.text_input('Driver:',         help='The driver needed to parse the corpus')
         with st.beta_expander("Advanced"):
             sim = st.slider("Minimum percent of similarity between query and documents:", min_value=0.0, max_value=100.0, value=0.0, format="%f%%")
