@@ -38,7 +38,7 @@ class SearchEngine():
         max_freq = self.index['max_freq']
         max_freq_q = self.indexer.max_freq[0]
         #tf_{i, j} = freq_{i, j} / max_l freq_{l, j}
-        tf = [[0] * N] * len(v)
+        tf = [[0] * N for _ in range(len(v))]
         tfq = [freq / max_freq_q for [(_, freq)] in self.indexer.vocabulary.values()]
 
         for i, term in enumerate(v):
@@ -58,6 +58,7 @@ class SearchEngine():
         self.indexer.update_vocabulary(terms)
         return list(self.indexer.vocabulary.keys())
 
+
     def get_tokenizable(self, q):
         return [
             {
@@ -68,3 +69,4 @@ class SearchEngine():
                 'author':   '',
             }
         ]
+        
