@@ -12,6 +12,50 @@ import streamlit as st
 def visual(args):
     # log = init_logger(args)
 
+    session = SessionState(code='test')
+
+    st.title('Search Engine App')
+    st.sidebar.title('Settings')
+    with st.sidebar.form('config'):
+        corpus = st.text_input('Corpus Address:', help='The address where the corpus is stored')
+        driver = st.text_input('Driver:',         help='The drive needed to parse the corpus')
+        with st.beta_expander("Advanced"):
+            sim = st.slider("Sim threshold percent:", min_value=0.0, max_value=100.0, value=0.0, format="%f%%")
+        st.write('Press submit to persit the changes')
+        st.form_submit_button()
+
+    if corpus and driver:
+        with st.form('query-section'):
+            query = st.text_input('Query', help='Type what are you looking for')
+            fbutton = st.form_submit_button()
+
+        if query: 
+            if fbutton:
+                session.se = SearchEngine(corpus, driver)
+                session.rank = session.se.search(query, sim)
+            
+            with st.form('retro'):
+                data = []
+                for (a, b) in session.rank:
+                    left, rigth = st.beta_columns([5, 1])
+                    left.write(b)
+                    v = rigth.checkbox('', key=f'r{b}')
+                    data.append(((a, b), v))
+                left, rigth = st.beta_columns(2)
+                with left:
+                    rbutton = st.form_submit_button()
+                with rigth:
+                    st.write("Select and submit the relevant files")
+
+            if rbutton:
+                session.rank = session.se.give_feedback(data, sim)     
+        else:
+            st.warning('A non empty query required')            
+        
+    else:
+        st.header('An initial configuration is needed. Please fill the settings section in order to procced.')
+        if not corpus: st.warning('Corpus setting required')
+        if not driver: st.warning('Driver setting required')
 
 
 def cmd(args):
