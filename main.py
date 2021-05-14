@@ -21,8 +21,8 @@ def visual(args):
         driver = st.text_input('Driver:',         help='The driver needed to parse the corpus')
         with st.beta_expander("Advanced"):
             sim = st.slider("Minimum percent of similarity between query and documents:", min_value=0.0, max_value=100.0, value=0.0, format="%f%%")
-        st.write('Press submit to persist the changes')
-        st.form_submit_button()
+        st.write('Press save to persist the changes')
+        st.form_submit_button(label='Save')
 
     if corpus and driver:
         with st.form('query-section'):
@@ -32,7 +32,7 @@ def visual(args):
         if query: 
             if fbutton:
                 session.se = SearchEngine(corpus, driver)
-                session.rank = session.se.search(query, sim)
+                session.rank = session.se.search(query, sim/100)
             
             with st.form('retro'):
                 data = []
@@ -48,7 +48,7 @@ def visual(args):
                     st.write("Select and submit the relevant files")
 
             if rbutton:
-                session.rank = session.se.give_feedback(data, sim)     
+                session.rank = session.se.give_feedback(data, sim/100)     
         else:
             st.warning('A non empty query required')            
         
