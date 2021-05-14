@@ -32,3 +32,32 @@ class SearchEngineTestCase(unittest.TestCase):
         q = 'nutria leon'
         ranking = self.engine.search(q, 0)
         print(ranking)
+
+    def test__full_feedback(self):
+        q = 'nutria leon zorro'
+        ranking = self.engine.search(q, 0)
+        print(ranking)
+        feedback = [
+            (ranking[0], True),
+            (ranking[1], True),
+            (ranking[2], False),
+            (ranking[3], True),
+            (ranking[4], False),
+        ]
+        ranking = self.engine.give_feedback(feedback, 0)
+        print(ranking)
+
+    def test__pseudo_feedback(self):
+        q = 'nutria leon zorro'
+        ranking = self.engine.search(q, 0)
+        print(ranking)
+        feedback = [
+            (ranking[0], True),
+            (ranking[1], False),
+            (ranking[2], False),
+            (ranking[3], False),
+            (ranking[4], True),
+        ]
+        ranking = self.engine.give_feedback(feedback, 0, True, 2)
+        print(ranking)
+        
