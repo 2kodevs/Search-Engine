@@ -102,9 +102,7 @@ class Indexer:
             for sw in stopwords:
                 body = body.replace(sw, ' ')
 
-            for word in body.split(' '):
-                if word == '':
-                    continue
+            for word in body.split():
                 terms.append((word, id))
                     
             if doc['author'] != '':
