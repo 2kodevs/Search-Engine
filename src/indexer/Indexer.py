@@ -87,7 +87,7 @@ class Indexer:
         return {
             'N': self.N,
             'max_freq': self.max_freq,
-            'vocabulary': self.vocabulary,
+            'vocabulary': self.vocabulary.copy(),
         }
 
 
