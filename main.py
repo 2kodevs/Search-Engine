@@ -1,5 +1,5 @@
-from src import SearchEngine #, LoggerFactory as Logger
-from src import SessionState
+from src import SearchEngine, SessionState, CorpusReader #, LoggerFactory as Logger
+from src.corpustools.drivers import drivers
 import streamlit as st
 
 
@@ -18,9 +18,9 @@ def visual(args):
     st.sidebar.title('Settings')
     with st.sidebar.form('config'):
         corpus = st.text_input('Corpus Directory:', help='The directory where the corpus is stored')
-        driver = st.text_input('Driver:',         help='The driver needed to parse the corpus')
+        driver = st.selectbox('Driver:', help='The driver needed to parse the corpus', options=[d.__name__ for d in drivers])
         with st.beta_expander("Advanced"):
-            sim = st.slider("Minimum percent of similarity between query and documents:", min_value=0.0, max_value=100.0, value=0.0, format="%f%%")
+            sim = st.slider("Minimum percent of similarity between query and documents:", min_value=0.0, max_value=100.0, value=45.0, format="%f%%")
         st.write('Press save to persist the changes')
         savebutton = st.form_submit_button(label='Save')
 
@@ -36,11 +36,15 @@ def visual(args):
             
             with st.form('retro'):
                 data, selection = [], False
-                for (a, b) in session.rank:
+                cr = CorpusReader(corpus, driver)
+                for ((p, id), (t, a)) in zip(session.rank, cr.get_info(session.rank)):
                     left, rigth = st.beta_columns([5, 1])
-                    left.write(b)
-                    v = rigth.checkbox('', key=f'check{corpus}-{driver}-{query}{b}')
-                    data.append(((a, b), v))
+                    with left:
+                        st.write(t)
+                        st.caption(a)
+                        # st.write(id)
+                    v = rigth.checkbox('', key=f'check{corpus}-{driver}-{query}{id}')
+                    data.append(((p, id), v))
                     selection |= v
                 left, right = st.beta_columns([1, 3])
                 with left:
