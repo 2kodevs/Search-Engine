@@ -6,7 +6,9 @@ class CorpusReader:
         self.data = []
         self.addr = addr
         self.parse_dir = parse_dir
+        print(driver)
         self.driver = get_driver(driver)
+        print(self.driver)
 
         if not os.path.exists(self.parse_dir):
             os.mkdir(self.parse_dir)
