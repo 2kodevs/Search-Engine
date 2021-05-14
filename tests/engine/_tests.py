@@ -52,12 +52,12 @@ class SearchEngineTestCase(unittest.TestCase):
         ranking = self.engine.search(q, 0)
         print(ranking)
         feedback = [
-            (ranking[0], True),
-            (ranking[1], False),
-            (ranking[2], False),
-            (ranking[3], False),
-            (ranking[4], True),
+            (ranking[0]),
+            (ranking[1]),
+            (ranking[2]),
+            (ranking[3]),
+            (ranking[4]),
         ]
-        ranking = self.engine.give_feedback(feedback, 0, True, 2)
+        ranking = self.engine.give_feedback(feedback, 0, True, 3)
         print(ranking)
         

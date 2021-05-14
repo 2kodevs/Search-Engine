@@ -99,7 +99,9 @@ class SearchEngine():
                 doc_vector[j] += w[i][j]
 
         rv = beta / len(dr) * sum([dj for i, dj in enumerate(doc_vector) if d.get(i)])
-        nrv = gamma / len(dnr) * sum([dj for i, dj in enumerate(doc_vector) if not d.get(i)])
+        nrv = 0
+        if len(dnr) > 0:
+            nrv = gamma / len(dnr) * sum([dj for i, dj in enumerate(doc_vector) if not d.get(i)])
         value = rv - nrv
 
         return [wqi * alpha + value for wqi in wq]
@@ -108,13 +110,16 @@ class SearchEngine():
     @staticmethod
     def process_feedback(feedback, pseudo=False, k=50):
         d = dict()
-        dr = list(filter(lambda d: d[1], feedback))
+        dr = dict()
         dnr = 0
 
         if pseudo:
-            dnr = list(filter(lambda d: not d[1], feedback))[:k]
-            d = dict(map(lambda t: (t[0][1], t[1]), dr + dnr))
+            dr = feedback[:k]
+            dnr = feedback[k:]
+            d = dict(map(lambda t: (t[1], True), dr))
+            d.update(dict(map(lambda t: (t[1], False), dnr)))
         else:
+            dr = list(filter(lambda d: d[1], feedback))
             dnr = list(filter(lambda d: not d[1], feedback))
             d = dict(map(lambda t: (t[0][1], t[1]), feedback))
 
