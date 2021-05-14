@@ -76,14 +76,24 @@ def cmd(args):
 
 
 def evaluation(args):
-    # Tienes el driver en args.driver
-    # Para parsear el copus example necesitas crear hacer `get_driver(driver).queries(*args.params)`
-    # te lo comento para que sepas cual es la idea no para q resulevas eso desde aqui.
-    # 
-    # en cmd se corre de la siguente manera:
-    # python main.py -d <driver> -p <driver-param1> <driver-param2> ... -s 10
-    # Cranfield tiene 2 parametros en el metodo queries, 1ro la dir del .qry y 2do la del cranqrel
-    pass
+    from src.corpustools.drivers import get_driver
+
+    queries = get_driver(args.driver).queries(*args.params) 
+    engine = SearchEngine(args.corpus, args.driver)
+
+    precisions, recalls = [], []
+    for query_data in queries:
+        q = query_data['query']
+        ranking = engine.search(q, 0)
+        p, r = engine.evaluate_ranking(ranking, query_data, args.recover)
+        precisions.append(p)
+        recalls.append(r)
+
+    fails = len(list(filter(lambda r: r == 0, recalls)))
+
+    print(f'Precision mean: {sum(precisions) / len(precisions)}')
+    print(f'Recall mean: {sum(recalls) / len(recalls)}')
+    print(f'Queries with wrong results: {fails} ({fails * 100 / len(queries)}%)')
 
 
 if __name__ == '__main__':
@@ -94,7 +104,7 @@ if __name__ == '__main__':
 
     cmdline = subparsers.add_parser('cmd', help="Solve a query from cmd")
     cmdline.add_argument('-d', '--driver', type=str,   required=True,  help='driver to use in the corpus parsing proccess')
-    cmdline.add_argument('-c', '--corpus', type=str,   required=True,  help='corpus address')
+    cmdline.add_argument('-c', '--corpus', type=str,   required=True,  help='corpus dir')
     cmdline.add_argument('-f', '--file',   action='store_true',        help='use the logs file')
     cmdline.add_argument('-l', '--level',  type=str,   default='INFO', help='log level')
     cmdline.add_argument('-q', '--query',  type=str,   required=True,  help='query to retrive')
@@ -108,8 +118,10 @@ if __name__ == '__main__':
 
     evaluator = subparsers.add_parser('eval', help="Run the search engine evaluation")
     evaluator.add_argument('-d', '--driver',  type=str,   required=True,  help='driver to use in the corpus parsing proccess')
+    evaluator.add_argument('-c', '--corpus', type=str,   required=True,  help='corpus dir')
     evaluator.add_argument('-p', '--params',  nargs='+',  default=[],     help="Driver parameters")
     evaluator.add_argument('-s', '--sim',     type=float, default=45,      help='Minimum sim value')
+    evaluator.add_argument('-r', '--recover', type=int,  default=20,      help='Minimum sim value')
     evaluator.add_argument('-f', '--file',    action='store_true',        help='use the logs file')
     evaluator.add_argument('-l', '--level',   type=str,   default='INFO', help='log level')
     evaluator.set_defaults(command=evaluation)
