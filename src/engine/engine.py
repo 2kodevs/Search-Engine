@@ -39,12 +39,11 @@ class SearchEngine():
         max_freq_q = self.indexer.max_freq[0]
         #tf_{i, j} = freq_{i, j} / max_l freq_{l, j}
         tf = [[0] * N] * len(v)
-        tfq = [0] * len(v)
-        for i, term in enumerate(v):
-            for (docID, freq), (_, freq_q) in zip(self.index['vocabulary'][term], self.indexer.vocabulary[term]):
-                tf[i][docID - 1] = freq / max_freq[docID - 1]
-                tfq[i] = freq_q / max_freq_q
+        tfq = [freq / max_freq_q for [(_, freq)] in self.indexer.vocabulary.values()]
 
+        for i, term in enumerate(v):
+            for (docID, freq) in self.index['vocabulary'][term]:
+                tf[i][docID - 1] = freq / max_freq[docID - 1]
 
         w = [[tf[i][j] * idf[i] for j in range(len(tf[i]))] for i in range(len(v))]
         wq = [(a + (1 - a) * tfq[i]) * idf[i] for i in range(len(v))]
