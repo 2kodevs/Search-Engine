@@ -10,7 +10,7 @@ class SearchEngine():
     
     def search(self, q, threshold, a = 0.5):
         q = self.vectorize_query(q)
-        q = filter(lambda term: term in self.index['vocabulary'], q)
+        q = list(filter(lambda term: term in self.index['vocabulary'], q))
 
         w, wq = self.get_weights(q, a)
 
@@ -52,6 +52,20 @@ class SearchEngine():
 
 
     def vectorize_query(self, q):
-        terms = self.indexer.tokenize(q)
+        self.indexer.N = 1
+        self.indexer.max_freq = [0]
+
+        terms = self.indexer.tokenize(self.get_tokenizable(q))
         self.indexer.update_vocabulary(terms)
-        return self.indexer.vocabulary.keys()
+        return list(self.indexer.vocabulary.keys())
+
+    def get_tokenizable(self, q):
+        return [
+            {
+                'id':       1,
+                'B':        '',
+                'text':     q,
+                'title':    '',
+                'author':   '',
+            }
+        ]
