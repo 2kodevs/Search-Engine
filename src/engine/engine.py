@@ -77,4 +77,46 @@ class SearchEngine():
                 'author':   '',
             }
         ]
+
+
+    def give_feedback(self, feedback, threshold, pseudo=False, k=50, alpha = 1, beta = 0.75, gamma = 0.15):
+        fb = SearchEngine.process_feedback(feedback, pseudo, k)
+        wq_new = self.rocchio(fb, alpha, beta, gamma)
+        self.wq = wq_new
+        
+        return self.get_ranking(self.w, wq_new, threshold)
+
+
+    def rocchio(self, feedback, alpha, beta, gamma):
+        #feedback => [((sim, i), marked)]
+        d, dr, dnr = feedback
+        q = self.last_query
+        w, wq = self.w, self.wq
+
+        doc_vector = [0] * self.index['N']
+        for i in range(len(wq)):
+            for j in range(len(w[i])):
+                doc_vector[j] += w[i][j]
+
+        rv = beta / len(dr) * sum([dj for i, dj in enumerate(doc_vector) if d.get(i)])
+        nrv = gamma / len(dnr) * sum([dj for i, dj in enumerate(doc_vector) if not d.get(i)])
+        value = rv - nrv
+
+        return [wqi * alpha + value for wqi in wq]
+
+
+    @staticmethod
+    def process_feedback(feedback, pseudo=False, k=50):
+        d = dict()
+        dr = list(filter(lambda d: d[1], feedback))
+        dnr = 0
+
+        if pseudo:
+            dnr = list(filter(lambda d: not d[1], feedback))[:k]
+            d = dict(map(lambda t: (t[0][1], t[1]), dr + dnr))
+        else:
+            dnr = list(filter(lambda d: not d[1], feedback))
+            d = dict(map(lambda t: (t[0][1], t[1]), feedback))
+
+        return (d, dr, dnr)
         
