@@ -3,7 +3,7 @@ from src import Indexer
 
 class IndexerTestCase(unittest.TestCase):
     def setUp(self):
-        self.Indexer = Indexer();
+        self.Indexer = Indexer()
         self.maxDiff = None
 
     def test_tokenizer(self):

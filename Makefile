@@ -1,5 +1,11 @@
 .DEFAULT_GOAL 	:= help
 
+run: ## run the visual application
+	@streamlit run main.py visual
+
+install: ## install dependencies
+	@pip install -r requirements.txt
+
 view: ## display the Makefile
 	@cat Makefile
 
