@@ -27,7 +27,7 @@ def visual(args):
     if corpus and driver:
         with st.form('query-section'):
             query = st.text_input('Query', help='Type what are you looking for')
-            fbutton = st.form_submit_button()
+            fbutton = st.form_submit_button(label='Search')
 
         if query: 
             if fbutton:
@@ -39,7 +39,7 @@ def visual(args):
                 for (a, b) in session.rank:
                     left, rigth = st.beta_columns([5, 1])
                     left.write(b)
-                    v = rigth.checkbox('', key=f'r{b}')
+                    v = rigth.checkbox('', key=f'check{corpus}-{driver}-{query}{b}')
                     data.append(((a, b), v))
                 left, rigth = st.beta_columns(2)
                 with left:
