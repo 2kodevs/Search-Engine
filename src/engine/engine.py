@@ -30,7 +30,7 @@ class SearchEngine():
 
 
     def get_weights(self, v, a):
-        n = [ sum([f for (_, f) in self.index['vocabulary'][term]]) for term in v ]
+        n = [ sum([len(self.index['vocabulary'][term])]) for term in v ]
         N = self.index['N']
         #idf_i = log(N, n_i)
         idf = [log(N / n_i) for n_i in n]

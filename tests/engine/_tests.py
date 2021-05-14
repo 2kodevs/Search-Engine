@@ -11,7 +11,7 @@ class SearchEngineTestCase(unittest.TestCase):
         self.assertEqual(self.engine.vectorize_query(q), ans)
 
     def test_get_weights(self):
-        q = 'zorro nutria'
+        q = 'leon nutria zorro'
         q = self.engine.vectorize_query(q)
         q = list(filter(lambda term: term in self.engine.index['vocabulary'], q))
 
