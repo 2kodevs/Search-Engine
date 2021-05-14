@@ -18,7 +18,7 @@ def visual(args):
     st.sidebar.title('Settings')
     with st.sidebar.form('config'):
         corpus = st.text_input('Corpus Address:', help='The address where the corpus is stored')
-        driver = st.text_input('Driver:',         help='The drive needed to parse the corpus')
+        driver = st.text_input('Driver:',         help='The driver needed to parse the corpus')
         with st.beta_expander("Advanced"):
             sim = st.slider("Sim threshold percent:", min_value=0.0, max_value=100.0, value=0.0, format="%f%%")
         st.write('Press submit to persit the changes')
