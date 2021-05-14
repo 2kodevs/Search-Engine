@@ -35,20 +35,24 @@ def visual(args):
                 session.rank = session.se.search(query, sim/100)
             
             with st.form('retro'):
-                data = []
+                data, selection = [], False
                 for (a, b) in session.rank:
                     left, rigth = st.beta_columns([5, 1])
                     left.write(b)
                     v = rigth.checkbox('', key=f'check{corpus}-{driver}-{query}{b}')
                     data.append(((a, b), v))
-                left, right = st.beta_columns(2)
+                    selection |= v
+                left, right = st.beta_columns([1, 3])
                 with left:
                     rbutton = st.form_submit_button()
                 with right:
                     st.write("Select and submit the relevant files to improve results")
 
             if rbutton:
-                session.rank = session.se.give_feedback(data, sim/100)     
+                if selection:
+                    session.rank = session.se.give_feedback(data, sim/100) 
+                else:
+                    st.error('You need to mark some data as relevant')    
         else:
             st.warning('A non empty query required')            
         
