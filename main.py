@@ -21,6 +21,9 @@ def visual(args):
         driver = st.selectbox('Driver:', help='The driver needed to parse the corpus', options=[d.__name__ for d in drivers])
         with st.beta_expander("Advanced"):
             sim = st.slider("Minimum percent of similarity between query and documents:", min_value=0.0, max_value=100.0, value=45.0, format="%f%%")
+            pseudo = st.checkbox('Use pseudo feedback')
+            K  = st.number_input('K', help='Number of relevant docs to asume in pseudo-feedback', step=1, min_value=1)
+            it = st.number_input('Iterations', help='Number of pseudo-feedback iterations', step=1, min_value=1)
         st.write('Press save to persist the changes')
         savebutton = st.form_submit_button(label='Save')
 
@@ -33,6 +36,9 @@ def visual(args):
             if fbutton or savebutton:
                 session.se = SearchEngine(corpus, driver)
                 session.rank = session.se.search(query, sim/100)
+                if pseudo:
+                    for _ in range(it):
+                        session.rank = session.se.give_feedback(session.rank, sim/100, pseudo=True, k=K)
             
             with st.form('retro'):
                 data, selection = [], False
