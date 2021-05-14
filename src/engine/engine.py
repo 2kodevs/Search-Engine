@@ -116,8 +116,8 @@ class SearchEngine():
         if pseudo:
             dr = feedback[:k]
             dnr = feedback[k:]
-            d = dict(map(lambda t: ((t[1], t[0]), True), dr))
-            d.update(dict(map(lambda t: ((t[1], t[0]), False), dnr)))
+            d = dict(map(lambda t: (t[1], True), dr))
+            d.update(dict(map(lambda t: (t[1], False), dnr)))
         else:
             dr = list(filter(lambda d: d[1], feedback))
             dnr = list(filter(lambda d: not d[1], feedback))
