@@ -1,5 +1,8 @@
 .DEFAULT_GOAL 	:= help
 
+run: ## run the visual application
+	@streamlit run main.py visual
+
 view: ## display the Makefile
 	@cat Makefile
 
