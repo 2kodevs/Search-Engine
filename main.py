@@ -67,8 +67,19 @@ def cmd(args):
     # log.info('Running the indexer', 'cmd')
 
     se = SearchEngine(args.corpus, args.driver)
-    ranking = se.search(args.query, args.sim)
+    ranking = se.search(args.query, args.sim/100)
     print(ranking)
+
+
+def evaluation(args):
+    # Tienes el driver en args.driver
+    # Para parsear el copus example necesitas crear hacer `get_driver(driver).queries(*args.params)`
+    # te lo comento para que sepas cual es la idea no para q resulevas eso desde aqui.
+    # 
+    # en cmd se corre de la siguente manera:
+    # python main.py -d <driver> -p <driver-param1> <driver-param2> ... -s 10
+    # Cranfield tiene 2 parametros en el metodo queries, 1ro la dir del .qry y 2do la del cranqrel
+    pass
 
 
 if __name__ == '__main__':
@@ -83,13 +94,21 @@ if __name__ == '__main__':
     cmdline.add_argument('-f', '--file',   action='store_true',        help='use the logs file')
     cmdline.add_argument('-l', '--level',  type=str,   default='INFO', help='log level')
     cmdline.add_argument('-q', '--query',  type=str,   required=True,  help='query to retrive')
-    cmdline.add_argument('-s', '--sim',    type=float, default=0,      help='Minimum sim value')
+    cmdline.add_argument('-s', '--sim',    type=float, default=45,      help='Minimum sim value')
     cmdline.set_defaults(command=cmd)
 
     app = subparsers.add_parser('visual', help="Open the visual application")
     app.set_defaults(file=True)
     app.set_defaults(level='INFO')
     app.set_defaults(command=visual)
+
+    evaluator = subparsers.add_parser('eval', help="Run the search engine evaluation")
+    evaluator.add_argument('-d', '--driver',  type=str,   required=True,  help='driver to use in the corpus parsing proccess')
+    evaluator.add_argument('-p', '--params',  nargs='+',  default=[],     help="Driver parameters")
+    evaluator.add_argument('-s', '--sim',     type=float, default=45,      help='Minimum sim value')
+    evaluator.add_argument('-f', '--file',    action='store_true',        help='use the logs file')
+    evaluator.add_argument('-l', '--level',   type=str,   default='INFO', help='log level')
+    evaluator.set_defaults(command=evaluation)
 
     args = parser.parse_args()
     if not hasattr(args, 'command'): parser.print_help()
