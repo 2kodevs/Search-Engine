@@ -16,7 +16,7 @@ def cmd(args):
     # log = init_logger(args)
     # log.info('Running the indexer', 'cmd')
 
-    se = SearchEngine(args.corpus_dir, args.driver)
+    se = SearchEngine(args.corpus, args.driver)
     ranking = se.search(args.query, args.sim)
     print(ranking)
 
@@ -28,12 +28,12 @@ if __name__ == '__main__':
     subparsers = parser.add_subparsers()
 
     cmdline = subparsers.add_parser('cmd', help="Solve a query from cmd")
-    cmdline.add_argument('-d', '--driver', type=str,   required=True,       help='driver to use in the corpus parsing proccess')
-    cmdline.add_argument('-c', '--corpus', type=str,   required=True,       help='corpus address')
-    cmdline.add_argument('-f', '--file',   type=bool,  action='store_true', help='use the logs file')
-    cmdline.add_argument('-l', '--level',  type=str,   default='INFO',      help='log level')
-    cmdline.add_argument('-q', '--query',  type=str,   required=True,       help='query to retrive')
-    cmdline.add_argument('-s', '--sim',    type=float, default=0,           help='Minimum sim value')
+    cmdline.add_argument('-d', '--driver', type=str,   required=True,  help='driver to use in the corpus parsing proccess')
+    cmdline.add_argument('-c', '--corpus', type=str,   required=True,  help='corpus address')
+    cmdline.add_argument('-f', '--file',   action='store_true',        help='use the logs file')
+    cmdline.add_argument('-l', '--level',  type=str,   default='INFO', help='log level')
+    cmdline.add_argument('-q', '--query',  type=str,   required=True,  help='query to retrive')
+    cmdline.add_argument('-s', '--sim',    type=float, default=0,      help='Minimum sim value')
     cmdline.set_defaults(command=cmd)
 
     app = subparsers.add_parser('visual', help="Open the visual application")
