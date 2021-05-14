@@ -23,7 +23,7 @@ class SearchEngine():
 
         normq = sqrt(sum([wiq ** 2 for wiq in wq]))
 
-        ranking = [(ranking[i] / (norm_w[i] * normq), i + 1) for i in range(len(ranking)) if norm_w[i] > 0]
+        ranking = [(ranking[i] / (sqrt(norm_w[i]) * normq), i + 1) for i in range(len(ranking)) if norm_w[i] > 0]
         ranking.sort(reverse=True)
         ranking = list(filter(lambda sim: sim[0] >= threshold, ranking))
         return ranking
