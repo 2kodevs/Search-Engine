@@ -40,7 +40,7 @@ class Cranfield:
     def queries(query, rel):
         with open(query, 'r') as fd:
             querytext = fd.read()
-        with open(query, 'r') as fd:
+        with open(rel, 'r') as fd:
             reltext = fd.read()
         q = re.findall(qryre, querytext)
         r = re.findall(relre, reltext)
@@ -53,5 +53,5 @@ class Cranfield:
             for (id, text) in enumerate(q)
         ]
         for id, a in r:
-            data[int(id) - 1]['rel'].append(a)
+            data[int(id) - 1]['rel'].append(int(a))
         return data
