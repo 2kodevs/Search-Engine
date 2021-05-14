@@ -3,7 +3,7 @@ import re
 txtblock = "\n((?:(?=[^.])(?:.*\n))*)" 
 docre = rf'\.I (.+)\n\.T{txtblock}\.A{txtblock}\.B{txtblock}\.W{txtblock}'
 
-def cranfield(addr):
+class Cranfield:
     '''
     parse corpus files of the form:
         .I #
@@ -17,6 +17,8 @@ def cranfield(addr):
         <multiline text for doc text>
     repeated any number of times.
     '''
+    @staticmethod
+    def read(addr):
     with open(addr, 'r') as fd:
         doctext = fd.read()
     matchings = re.findall(docre, doctext)

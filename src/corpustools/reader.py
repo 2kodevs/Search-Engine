@@ -11,4 +11,4 @@ class CorpusReader:
         return self.data
 
     def read(self, addr):
-        self.data.extend(self.driver(addr))
+        self.data.extend(self.driver.read(addr))
