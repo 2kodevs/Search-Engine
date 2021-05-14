@@ -3,9 +3,6 @@ from src import SearchEngine, Indexer
 
 class SearchEngineTestCase(unittest.TestCase):
     def setUp(self):
-        indexer = Indexer()
-        indexer.get_index('./tests/mocks/animal_corpus', 'cranfield')
-        #create index if no exists
         self.engine = SearchEngine('./tests/mocks/animal_corpus', 'cranfield')
 
     def test_vectorize_query(self):
