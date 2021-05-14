@@ -22,7 +22,7 @@ def visual(args):
         with st.beta_expander("Advanced"):
             sim = st.slider("Minimum percent of similarity between query and documents:", min_value=0.0, max_value=100.0, value=0.0, format="%f%%")
         st.write('Press save to persist the changes')
-        st.form_submit_button(label='Save')
+        savebutton = st.form_submit_button(label='Save')
 
     if corpus and driver:
         with st.form('query-section'):
@@ -30,7 +30,7 @@ def visual(args):
             fbutton = st.form_submit_button(label='Search')
 
         if query: 
-            if fbutton:
+            if fbutton or savebutton:
                 session.se = SearchEngine(corpus, driver)
                 session.rank = session.se.search(query, sim/100)
             
