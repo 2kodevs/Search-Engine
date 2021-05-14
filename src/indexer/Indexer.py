@@ -46,8 +46,10 @@ class Indexer:
                 with open(self.idx_dir + f'{driver}_index_{idx + 1}', 'r') as fd:
                     return json.load(fd)
         except ValueError:
+            pass
             # log.debug(f'({corpus_dir}, {driver}) not found in dirs.json')
         except FileNotFoundError:
+            pass
             # log.info('Index not found, proceding to create one...')
         return None
 
