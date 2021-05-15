@@ -1,9 +1,9 @@
-from .cranfield import cranfield
-from .reutrers import reuters
+from .cranfield import Cranfield
+from .reutrers import Reuters
 
 drivers = [
-    cranfield,
-    reuters,
+    Cranfield,
+    Reuters,
 ]
 
 def get_driver(name):
