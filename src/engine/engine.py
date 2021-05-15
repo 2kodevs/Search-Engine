@@ -37,11 +37,13 @@ class SearchEngine():
         RI = {d for (_, d) in ranking[:recover]} - RR
         rel = set(query_data['rel'])
         NR = rel - RR
+        NI = {d for (_, d) in ranking[recover:]} - rel
 
         precision = len(RR) / len(RR | RI)
         recall = len(RR) / len(RR | NR)
+        fallout = len(RI) / len(RI | NI)
 
-        return (precision, recall)
+        return (precision, recall, fallout)
 
 
     def get_ranking(self, w, wq, threshold):

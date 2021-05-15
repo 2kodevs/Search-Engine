@@ -47,6 +47,7 @@ def visual(args):
                     left, rigth = st.beta_columns([5, 1])
                     with left:
                         st.markdown(f'#### {t}\n\n_{a}_')
+                        # To display document ID
                         # st.write(id)
                     v = rigth.checkbox('', key=f'check{corpus}-{driver}-{query}{id}')
                     data.append(((p, id), v))
@@ -86,18 +87,23 @@ def evaluation(args):
     queries = get_driver(args.driver).queries(*args.params) 
     engine = SearchEngine(args.corpus, args.driver)
 
-    precisions, recalls = [], []
+    precisions, recalls, fallouts = [], [], []
     for query_data in queries:
         q = query_data['query']
         ranking = engine.search(q, 0)
-        p, r = engine.evaluate_ranking(ranking, query_data, args.recover)
+        if args.pseudo:
+            for _ in range(args.iterations):
+                ranking = engine.give_feedback(ranking, 0, pseudo=True, k=args.K)
+        p, r, f = engine.evaluate_ranking(ranking, query_data, args.recover)
         precisions.append(p)
         recalls.append(r)
+        fallouts.append(f)
 
     fails = len(list(filter(lambda r: r == 0, recalls)))
 
     print(f'Precision mean: {sum(precisions) / len(precisions)}')
     print(f'Recall mean: {sum(recalls) / len(recalls)}')
+    print(f'Fallout mean: {sum(fallouts) / len(fallouts)}')
     print(f'Queries with wrong results: {fails} ({fails * 100 / len(queries)}%)')
 
 
@@ -127,6 +133,9 @@ if __name__ == '__main__':
     evaluator.add_argument('-p', '--params',  nargs='+',  default=[],     help="Driver parameters")
     evaluator.add_argument('-s', '--sim',     type=float, default=45,      help='Minimum sim value')
     evaluator.add_argument('-r', '--recover', type=int,  default=20,      help='First r documents of the ranking to evaluate')
+    evaluator.add_argument('--pseudo',  action='store_true',        help='Use automatic relevance feedback (pseudo feedback) on rankings')
+    evaluator.add_argument('-i', '--iterations', type=int,  default=4,    help='Number of pseudo feedback iterations')
+    evaluator.add_argument('-k', '--K', type=int,  default=10,    help='Number of relevant docs to asume in pseudo-feedback')
     evaluator.add_argument('-f', '--file',    action='store_true',        help='use the logs file')
     evaluator.add_argument('-l', '--level',   type=str,   default='INFO', help='log level')
     evaluator.set_defaults(command=evaluation)
