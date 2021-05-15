@@ -40,6 +40,7 @@ def visual(args):
                     for _ in range(it):
                         session.rank = session.se.give_feedback(session.rank, sim/100, pseudo=True, k=K)
             
+            st.subheader(f"Showing {len(session.rank)} of {session.se.index['N']} documents")
             with st.form('retro'):
                 data, selection = [], False
                 cr = CorpusReader(corpus, driver)
