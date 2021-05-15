@@ -123,13 +123,13 @@ The `queries` method return a list of query test with the following format:
     "rel": "[<doc1>, <doc2>, ...]",
 }
 ```
-Where `rel` is a list of relevant document for the query.
+Where `rel` is a list of relevant documents for the query.
 
 ### Registration
 
 Add your driver to the folder `src/corpustools/drivers/`.
 
-To register your driver eddit the `src/corpustools/drivers/__init__.py` like showed below
+To register your driver edit the `src/corpustools/drivers/__init__.py` like showed below
 
 ```python
 # some imports ...
