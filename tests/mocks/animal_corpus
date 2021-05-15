@@ -1,0 +1,45 @@
+.I 1
+.T
+Muchos Leones
+.A
+Simba
+.B
+disney
+.W
+leon leon leon
+.I 2
+.T
+Muchos Leones y un z
+.A
+Simba Fox
+.B
+discovery channel
+.W
+leon leon leon zorro
+.I 3
+.T
+Zoo
+.A
+Marvin
+.B
+Fauna
+.W
+leon zorro nutria
+.I 4
+.T
+Muchos Leones y Muchos Zorros
+.A
+Marvin Rogue
+.B
+discovery channel
+.W
+leon leon leon zorro zorro zorro
+.I 5
+.T
+Una Nutria
+.A
+Nutritiva
+.B
+Nutritivo
+.W
+nutria
