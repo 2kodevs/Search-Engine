@@ -1,7 +1,7 @@
-from .cranfield import cranfield
+from .cranfield import Cranfield
 
 drivers = [
-    cranfield,
+    Cranfield,
 ]
 
 def get_driver(name):

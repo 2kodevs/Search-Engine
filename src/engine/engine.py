@@ -20,6 +20,30 @@ class SearchEngine():
         return self.get_ranking(w, wq, threshold)
 
 
+    #RR recuperados relevantes
+    #RI recuperados irrelevantes
+    #NR no recuperados relevantes
+    #NI no recuperados irrelevantes
+    # query_data:
+    # {
+    #     'rel':   [int],
+    #     'id':    str,
+    #     'query': str,
+    # } 
+    def evaluate_ranking(self, ranking, query_data, recover):
+        query_data['rel'].sort()
+
+        RR = set([d for (_, d) in ranking[:recover] if d in query_data['rel']])
+        RI = {d for (_, d) in ranking[:recover]} - RR
+        rel = set(query_data['rel'])
+        NR = rel - RR
+
+        precision = len(RR) / len(RR | RI)
+        recall = len(RR) / len(RR | NR)
+
+        return (precision, recall)
+
+
     def get_ranking(self, w, wq, threshold):
         ranking = [0] * self.index['N']
         norm_w = ranking.copy()
