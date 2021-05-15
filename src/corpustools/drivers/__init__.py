@@ -1,5 +1,5 @@
 from .cranfield import Cranfield
-from .reutrers import Reuters
+from .reuters import Reuters
 
 drivers = [
     Cranfield,
