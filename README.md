@@ -43,6 +43,12 @@ or use the makefile rule `run`:
 ```
 make run
 ```
+### Help
+In order to explore all the arguments available in each execution mode just type:
+```
+python main.py <mode> -h
+```
+> Replace `<mode>` for cmd, eval or visual
 
 ## App usage 📋
 In the app sidebar you have the settings section:
