@@ -79,4 +79,66 @@ You can select the relevant document making some of them like in the picture abo
 
 ![Feedback](./images/submit.png)
 
+# Drivers
 
+Drivers are ment for load corpus documents. If you have a new corpus format
+you need to add a custom driver.
+
+## Implementation
+
+Drivers are clases with an static method read that recieve the address of the 
+corpus as argument.
+
+Optionally you can add a method `queries` with arguments that you need for load
+the test suit for test a corpus.
+
+```python
+class YourDriverName:
+    @staticmethod
+    def read(addr):
+        # your code here
+
+    @staticmethod
+    def queries(param1, param2, ....):
+        # your code here
+```
+
+The `read` method return a list of documents with the following format:
+
+```python
+{
+    "id": "<docId>",
+    "title": "<docTitle>",
+    "author": "<docAuthor>",
+    "text": "<docText>",
+}
+```
+
+The `queries` method return a list of query test with the following format:
+
+```python
+{
+    "id": "<TestId>",
+    "query": "<TestQuery>", 
+    "rel": "[<doc1>, <doc2>, ...]",
+}
+```
+Where `rel` is a list of relevant document for the query.
+
+## Registration
+
+Add your driver to the folder `src/corpustools/drivers/`.
+
+To register your driver eddit the `src/corpustools/drivers/__init__.py` like showed below
+
+```python
+# some imports ...
+from .yourdriverfile import YourDriver
+
+drivers = [
+    # other registered drivers ...
+    YourDriver,
+]
+
+...
+```
