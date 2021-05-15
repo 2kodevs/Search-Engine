@@ -121,7 +121,7 @@ if __name__ == '__main__':
     evaluator.add_argument('-c', '--corpus', type=str,   required=True,  help='corpus dir')
     evaluator.add_argument('-p', '--params',  nargs='+',  default=[],     help="Driver parameters")
     evaluator.add_argument('-s', '--sim',     type=float, default=45,      help='Minimum sim value')
-    evaluator.add_argument('-r', '--recover', type=int,  default=20,      help='Minimum sim value')
+    evaluator.add_argument('-r', '--recover', type=int,  default=20,      help='First r documents of the ranking to evaluate')
     evaluator.add_argument('-f', '--file',    action='store_true',        help='use the logs file')
     evaluator.add_argument('-l', '--level',   type=str,   default='INFO', help='log level')
     evaluator.set_defaults(command=evaluation)
