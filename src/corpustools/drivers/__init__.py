@@ -1,7 +1,11 @@
 from .cranfield import Cranfield
+from .newsgroup import NewsGroup
+from .reuters import Reuters
 
 drivers = [
     Cranfield,
+    Reuters,
+    NewsGroup,
 ]
 
 def get_driver(name):

@@ -46,8 +46,7 @@ def visual(args):
                 for ((p, id), (t, a)) in zip(session.rank, cr.get_info(session.rank)):
                     left, rigth = st.beta_columns([5, 1])
                     with left:
-                        st.write(t)
-                        st.caption(a)
+                        st.markdown(f'#### {t}\n\n_{a}_')
                         # To display document ID
                         # st.write(id)
                     v = rigth.checkbox('', key=f'check{corpus}-{driver}-{query}{id}')
