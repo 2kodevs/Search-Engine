@@ -3,7 +3,7 @@
 This project is an implementation of a Search Engine capable of proccess an index a documents corpus
 in order to make search queries over its contents
 
-# Install ⚙️
+## Install ⚙️
 The project was developed using `python 3.7.4`. If you need to install python see the official site [python.org](https://www.python.org/downloads).
 
 Additionally for use the project visual interface you will need to install the project dependencies using:
@@ -11,29 +11,29 @@ Additionally for use the project visual interface you will need to install the p
 make install
 ```
 
-# Execution ▶️
+## Execution ▶️
 We have 3 different entry points
 
-## Cmd execution
+### Cmd execution
 ```bash
 python main.py cmd -c <corpus-dir> -d <driver> -q <query>
 ```
-The previous command load the corpus at `<corpus-dir>` in order to find the relevant documents for the query `<query>`. Additionally is necessary to specify wich driver `<driver>` use to parse the corpus.
+The previous command load the corpus at `<corpus-dir>` in order to find the relevant documents for the query `<query>`. Additionally is necessary to specify which driver `<driver>` use to parse the corpus.
 
 > Note there 3 drivers implemented, Cranfield, Reuters and NewsGroup. Feel free to add new parsers.
 
-## Evaluation excecution
+### Evaluation of results
 ```bash
 python main.py eval -c <corpus-dir> -d <driver> -p <param1> <param2> ...
 ```
 The previous command use the corpus at `<corpus-dir>` to test the results of the search-engine given set of queries and the group of relevant files for every one of them. 
 
-Using the argument `-p` you are free to pass any number of `<params>` needed by the driver `<driver>` in order to parse the test suit.
+Using the argument `-p` you are free to pass any number of `<params>` needed by the driver `<driver>` in order to parse the test suite.
 
-> Only the Cranfield driver has an implementation for read a test suit. This implamentation receive 2 parameters, the first is the dir of the queries, and the second the dir of the queries answers.
+> Only the Cranfield driver has an implementation for read a test suit. This implementation receive 2 parameters, the first is the directory of the queries, and the second the directory of the queries answers.
 
-## Visual application
-> **Stremlit** required
+### Visual application
+> **Streamlit** required
 
 To start the application just type:
 ```
@@ -55,13 +55,13 @@ Optionally you can expand the Advanced settings:
 
 ![Advanced](./images/advanced.png)
 
-Here as can configure some other params, like the similarity percent and the pseudo feedback
+Here you can configure some other params, like the similarity percent and the pseudo feedback
 
 > Read the inputs description at the `?` symbol for more information.
 
-Once you save your inital configuration, you are ready to make queries in the system.
+Once you save your initial configuration, you are ready to make queries in the system.
 
-> You can change the setting change and save the settings as many times as you want.
+> You can change and save the settings as many times as you want.
 
 ![Query](./images/empty.png)
 
