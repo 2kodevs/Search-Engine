@@ -88,21 +88,23 @@ def evaluation(args):
     queries = get_driver(args.driver).queries(*args.params) 
     engine = SearchEngine(args.corpus, args.driver)
 
-    precisions, recalls = [], []
+    precisions, recalls, fallouts = [], [], []
     for query_data in queries:
         q = query_data['query']
         ranking = engine.search(q, 0)
         if args.pseudo:
             for _ in range(args.iterations):
                 ranking = engine.give_feedback(ranking, 0, pseudo=True, k=args.K)
-        p, r = engine.evaluate_ranking(ranking, query_data, args.recover)
+        p, r, f = engine.evaluate_ranking(ranking, query_data, args.recover)
         precisions.append(p)
         recalls.append(r)
+        fallouts.append(f)
 
     fails = len(list(filter(lambda r: r == 0, recalls)))
 
     print(f'Precision mean: {sum(precisions) / len(precisions)}')
     print(f'Recall mean: {sum(recalls) / len(recalls)}')
+    print(f'Fallout mean: {sum(fallouts) / len(fallouts)}')
     print(f'Queries with wrong results: {fails} ({fails * 100 / len(queries)}%)')
 
 
