@@ -132,7 +132,7 @@ if __name__ == '__main__':
     evaluator.add_argument('-p', '--params',  nargs='+',  default=[],     help="Driver parameters")
     evaluator.add_argument('-s', '--sim',     type=float, default=45,      help='Minimum sim value')
     evaluator.add_argument('-r', '--recover', type=int,  default=20,      help='First r documents of the ranking to evaluate')
-    evaluator.add_argument('-a', '--pseudo',  action='store_true',        help='Use automatic relevance feedback (pseudo feedback) on rankings')
+    evaluator.add_argument('--pseudo',  action='store_true',        help='Use automatic relevance feedback (pseudo feedback) on rankings')
     evaluator.add_argument('-i', '--iterations', type=int,  default=4,    help='Number of pseudo feedback iterations')
     evaluator.add_argument('-k', '--K', type=int,  default=10,    help='Number of relevant docs to asume in pseudo-feedback')
     evaluator.add_argument('-f', '--file',    action='store_true',        help='use the logs file')
