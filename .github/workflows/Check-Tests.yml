@@ -14,6 +14,8 @@ jobs:
       - name: Install dependencies
         run: |
           make install
+      - name: Upgrade protobuf to sort issue with streamlit version
+        run: pip install --upgrade protobuf
       - name: Run tests
         run: make test
       - run: echo "🍏 This job's status is ${{ job.status }}."
